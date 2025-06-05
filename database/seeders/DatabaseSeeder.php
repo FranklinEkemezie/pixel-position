@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Employer;
+use App\Models\Job;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Database\Factories\EmployerFactory;
@@ -25,5 +26,8 @@ class DatabaseSeeder extends Seeder
 
         //
         Employer::factory(20)->create();
+
+        //
+        Job::factory(50)->create();
     }
 }

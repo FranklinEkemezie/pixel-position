@@ -1,12 +1,20 @@
 <?php
 
-
 use App\Models\Employer;
+use App\Models\Job;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
+
+// Test required fields
+it('requires a name and user ID', function () {
+    $this->expectException(QueryException::class);
+
+    // Create employer with missing fields
+    Employer::create();
+});
 
 // Test that a user can create an employer
 it('allows a user to create an employer', function () {
@@ -43,12 +51,4 @@ it('belongs to a user', function () {
 
     expect($employer->user)->toBeInstanceOf(User::class)
         ->and($employer->user_id)->toBe($user->id);
-});
-
-// Test required fields
-it('requires a name and user_id', function () {
-    $this->expectException(QueryException::class);
-
-    // Create employer with missing fields
-    Employer::create(['user_id' => 5]);
 });
