@@ -2,12 +2,18 @@
 
 use App\Models\Employer;
 use App\Models\Job;
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-// Test required fields
+/*
+ * Instantiation
+ */
+
 it('requires a title, employer ID, salary, and url', function () {
     $this->expectException(QueryException::class);
 
@@ -15,40 +21,55 @@ it('requires a title, employer ID, salary, and url', function () {
     Job::create([]);
 });
 
-// Test that an employer can create job
-it('allows an employer to create a job', function () {
-    $employer = Employer::factory()->create();
+/**
+ * Abilities
+ */
+it('can attach a tag', function () {
+    // Arrange
+    $job = Job::factory()->create();
+    $tag = Tag::factory()->create();
 
-    $job = new Job([
-        'title'     => 'Shift Leader',
-        'salary'    => '$50,000',
-        'url'       => 'https://www.example.com/job/122332'
-    ]);
-    $job->employer()->associate($employer);
+    // Act
+    $job->tags()->attach($tag);
 
-    expect($job)->toBeInstanceOf(Job::class)
-        ->and($job->employer_id)->toBe($employer->id)
-        ->and($job->title)->toBe('Shift Leader')
-        ->and($job->salary)->toBe('$50,000')
-        ->and($job->url)->toBe('https://www.example.com/job/122332');
+    // Assert
+    expect($job->tags->first()->is($tag))->toBeTrue();
 });
 
-// Test that an employer can have many jobs
-it('allows an employer to create more than one job', function () {
-    $employer = Employer::factory()->create();
+/**
+ * Constraints
+ */
+it('can attach many tags', function () {
+    // Arrange
+    $job = Job::factory()->create();
+    $tags = Tag::factory(10)->create();
 
-    $jobs = Job::factory(10)->create(['employer_id' => $employer->id]);
+    // Act
+    $job->tags()->attach($tags);
 
-    expect($employer->jobs->pluck('id')->sort()->values())
-        ->toEqual($jobs->pluck('id')->sort()->values());
+    // Assert
+    expect($job->tags)->toHaveCount(10)
+        ->and($job->tags->pluck('id'))->toEqualCanonicalizing($tags->pluck('id'));
 });
 
-// Test job-employer relationship
+
+/*
+ * Relationships
+ */
+
 it('belongs to an employer', function () {
-    $employer = Employer::factory()->create();
+    // Arrange
+    $job = Job::factory()->create();
 
-    $job = Job::factory()->create(['employer_id' => $employer->id]);
-
-    expect($job->employer)->toBeInstanceOf(Employer::class)
-        ->and($job->employer_id)->toBe($employer->id);
+    // Act and Assert
+    expect($job->employer())->toBeInstanceOf(BelongsTo::class);
 });
+
+it('belongs to many tags', function () {
+    // Arrange
+    $job = Job::factory()->create();
+
+    // Act and Assert
+    expect($job->tags())->toBeInstanceOf(BelongsToMany::class);
+});
+

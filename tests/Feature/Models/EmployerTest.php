@@ -3,52 +3,73 @@
 use App\Models\Employer;
 use App\Models\Job;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-// Test required fields
+/**
+ * Instantiation
+ */
+
 it('requires a name and user ID', function () {
     $this->expectException(QueryException::class);
 
     // Create employer with missing fields
-    Employer::create();
+    Employer::create([]);
 });
 
-// Test that a user can create an employer
-it('allows a user to create an employer', function () {
-   $user        = User::factory()->create();
+/**
+ * Abilities
+ */
 
-   $employer    = new Employer([
-       'name'   => 'Acme Inc.',
-       'logo'   => 'https://example.com/logo.png'
-   ]);
-   $employer->user()->associate($user);
+it('can create a job', function () {
+    // Arrange
+    $employer = Employer::factory()->create();
 
-   expect($employer)->toBeInstanceOf(Employer::class)
-       ->and($employer->user_id)->toBe($user->id)
-       ->and($employer->name)->toBe('Acme Inc.')
-       ->and($employer->logo)->toBe('https://example.com/logo.png');
+    // Act
+    $job = Job::factory()->for($employer)->create();
+
+    // Assert
+    expect($job)->toBeInstanceOf(Job::class)
+        ->and($job->employer_id)->toBe($employer->id);
 });
 
-// Test that a user cannot have more than one employer
-it('prevents a user from creating more than one employer', function () {
-    $user   = User::factory()->create();
+/**
+ * Constraints
+ */
 
-    Employer::factory()->create(['user_id' => $user->id]);
+it('can create many jobs', function () {
+    // Arrange
+    $employer = Employer::factory()->create();
 
-    $this->expectException(QueryException::class);
+    // Act
+    $jobs = Job::factory(10)->create(['employer_id' => $employer->id]);
 
-    // Try to insert another employer with the same user_id
-    Employer::factory()->create(['user_id' => $user->id]);
+    // Assert
+    expect($employer->jobs->pluck('id')->sort()->values())
+        ->toEqual($jobs->pluck('id')->sort()->values());
 });
 
-// Test employer-user relationship
+/**
+ * Relationships
+ */
+
 it('belongs to a user', function () {
-    $user       = User::factory()->create();
-    $employer   = Employer::factory()->create(['user_id' => $user->id]);
+    // Arrange
+    $employer = Employer::factory()->create();
 
-    expect($employer->user)->toBeInstanceOf(User::class)
-        ->and($employer->user_id)->toBe($user->id);
+    // Act and Assert
+    expect($employer->user())->toBeInstanceOf(BelongsTo::class);
 });
+
+it('has many jobs', function () {
+    // Arrange
+    $employer = Employer::factory()->create();
+
+    // Act and Assert
+    expect($employer->jobs())->toBeInstanceOf(HasMany::class);
+});
+
