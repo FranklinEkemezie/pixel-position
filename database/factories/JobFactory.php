@@ -41,7 +41,7 @@ class JobFactory extends Factory
         return [
             //
 
-            'employer_id'   => $fakeEmployerId,
+            'employer_id'   => $fakeEmployerId(),
             'title'         => fake()->jobTitle(),
             'salary'        => $fakeSalary(),
             'url'           => fake()->url,

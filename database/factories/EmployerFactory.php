@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Employer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends Factory<Employer>
@@ -18,11 +19,16 @@ class EmployerFactory extends Factory
      */
     public function definition(): array
     {
+        $employerLogos = Storage::disk('public')->files('images/employers-logos');
+        $getFakeEmployerLogo = fn() => (
+            ! empty($employerLogos) ? fake()->randomElement($employerLogos) : fake()->imageUrl
+        );
+
         return [
             //
             'user_id'   => User::factory(),
             'name'      => fake()->company(),
-            'logo'      => fake()->imageUrl()
+            'logo'      => $getFakeEmployerLogo()
         ];
     }
 }

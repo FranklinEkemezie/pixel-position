@@ -29,7 +29,7 @@
 
             <!-- Featured Jobs -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach([null, null, null, null, null] as $job)
+                @foreach($featuredJobs as $job)
                     <x-job-card :job="$job" />
                 @endforeach
             </div>
@@ -39,8 +39,8 @@
         <section class="my-4 py-8 space-y-8">
             <x-section-heading>Tags</x-section-heading>
             <div class="space-x-2 space-y-2">
-                @foreach(['programming', 'laravel', 'react'] as $tag)
-                    <x-tag>{{ $tag }}</x-tag>
+                @foreach($tags as $tag)
+                    <x-tag :tag="$tag" />
                 @endforeach
             </div>
         </section>
@@ -50,9 +50,13 @@
             <x-section-heading>Recent Jobs</x-section-heading>
 
             <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
-                @foreach([null, null, null, null, null] as $job)
+                @foreach($recentJobs as $job)
                     <x-job-card-alt :job="$job" />
                 @endforeach
+            </div>
+
+            <div>
+                {{ $recentJobs->links() }}
             </div>
         </section>
 

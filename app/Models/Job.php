@@ -43,4 +43,9 @@ class Job extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function limitTags(int $limit=5): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class)->limit($limit);
+    }
 }
