@@ -6,8 +6,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('shows the index page', function () {
-    // Arrange
-    $job = Job::factory(10)->create();
 
     // Act
     $response = $this->get('/');

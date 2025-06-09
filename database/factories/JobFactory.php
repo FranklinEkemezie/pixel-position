@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Employer;
 use App\Models\Job;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class JobFactory extends Factory
     {
         $fakeSalary = function (): string {
             $fakeAmount     = (fake()->numberBetween(1, 100)) * 1000;
-            $fakeCurrency   = fake()->currencyCode();
+            $fakeCurrency   = fake()->randomElement(['USD', 'EUR', 'NGN', 'JPY', 'AUD', 'CAD', 'GBP']);
 
             return "$fakeAmount $fakeCurrency";
         };
@@ -32,10 +33,8 @@ class JobFactory extends Factory
                 if ($employer) return $employer->id;
             }
 
-            // Create a new one
-            $employer = Employer::factory()->create();
-
-            return $employer->id;
+            // Create a new one and return ID
+            return Employer::factory()->create()->id;
         };
 
         return [

@@ -52,6 +52,24 @@ it('can attach many tags', function () {
         ->and($job->tags->pluck('id'))->toEqualCanonicalizing($tags->pluck('id'));
 });
 
+it('can get limit number of tags', function () {
+    // Arrange
+    $job = Job::factory()->create();
+    $tags = Tag::factory(10)->create();
+
+    // Act
+    $job->tags()->attach($tags);
+
+    // Assert
+    $firstDefaultLimitTags  = $job->limitTags(); // default (5) no. of tags
+    $firstThreeLimitTags    = $job->limitTags(3); // three tags
+    expect($firstDefaultLimitTags->get())->toHaveCount(5)
+        ->and($firstDefaultLimitTags->first()->is($tags[0]))
+
+        ->and($firstThreeLimitTags->get())->toHaveCount(3)
+        ->and($firstThreeLimitTags->first()->is($tags[0]));
+});
+
 
 /*
  * Relationships

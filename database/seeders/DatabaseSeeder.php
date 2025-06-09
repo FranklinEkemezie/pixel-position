@@ -25,20 +25,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Seed some users
-        User::factory(10)->create();
-
-        // Seed some employers
-        Employer::factory(20)->create();
-
-        // Seed some tags
-        $tags = Tag::factory(30)->create();
+        $this->call(UserSeeder::class);
 
         // Seed some jobs
-        Job::factory(50)
-            ->create()
-            ->each(fn($job) => $job->tags()->attach(
-                $tags->random(rand(3, 10))->pluck('id')->toArray()
-            ));
+        $this->call(JobSeeder::class);
 
     }
 }

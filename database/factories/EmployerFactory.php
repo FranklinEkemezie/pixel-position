@@ -27,7 +27,7 @@ class EmployerFactory extends Factory
         return [
             //
             'user_id'   => User::factory(),
-            'name'      => fake()->company(),
+            'name'      => fake()->unique()->company(),
             'logo'      => $getFakeEmployerLogo()
         ];
     }
