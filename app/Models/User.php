@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property Employer $employer
+ */
+
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

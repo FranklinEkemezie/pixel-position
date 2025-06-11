@@ -1,18 +1,18 @@
 <?php
 
-use App\Models\Job;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
 it('shows the index page', function () {
+    // Arrange
 
     // Act
     $response = $this->get('/');
 
     // Assert
     $response->assertOk();
-    $response->assertViewIs('index');
+    $response->assertViewIs('home.index');
     $response->assertViewHasAll([
         'featuredJobs',
         'recentJobs',

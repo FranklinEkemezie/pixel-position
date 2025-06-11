@@ -24,26 +24,68 @@
                 </a>
 
                 <div class="flex items-center justify-center space-x-6">
-                    <x-nav-button href="/register">Sign Up</x-nav-button>
-                    <x-nav-button href="/login">Login</x-nav-button>
+                    @guest
+                        <x-nav-button href="/register">Sign Up</x-nav-button>
+                        <x-nav-button href="/login">Login</x-nav-button>
+                    @endguest
+                    @auth
+                        <x-nav-button href="/jobs/create">Post a Job</x-nav-button>
+                        <form action="/logout" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <x-nav-button>Log Out</x-nav-button>
+                        </form>
+                    @endauth
                 </div>
             </div>
 
             <div class="flex items-center justify-center lg:justify-between space-x-2">
                 <x-nav-link href="/jobs">Jobs</x-nav-link>
+                @auth
+                    <x-nav-link href="/dashboard">Dashboard</x-nav-link>
+                @endauth
                 <x-nav-link href="/careers">Careers</x-nav-link>
                 <x-nav-link href="/salaries">Salaries</x-nav-link>
                 <x-nav-link href="/companies">Companies</x-nav-link>
             </div>
 
             <div class="hidden lg:flex lg:items-center lg:justify-between space-x-4 lg:space-x-6 transition">
-                <x-nav-button href="/">Sign Up</x-nav-button>
-                <x-nav-button href="/login">Login</x-nav-button>
+                @guest
+                    <x-nav-button href="/register">Sign Up</x-nav-button>
+                    <x-nav-button href="/login">Login</x-nav-button>
+                @endguest
+                @auth
+                    <x-nav-button href="/jobs/create">Post a Job</x-nav-button>
+                    <form action="/logout" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <x-nav-button>Log Out</x-nav-button>
+                    </form>
+                @endauth
             </div>
         </nav>
     </header>
 
-    <main class="px-8 lg:px-12">
+    <main class="px-8 lg:px-12 flex-1">
+
+        @auth
+            <div class="my-8 p-2">
+                <div class="flex items-center space-x-4">
+                    <x-employer-logo
+                        class="w-20 rounded-full"
+                        logo="{{ auth()->user()->employer->logo }}"
+                        alt="{{ auth()->user()->employer->name }}"
+                    />
+                    <div>
+                        <p class="text-gray-50/60">
+                            Hello,
+                            <span class="text-gray-50/80 font-semibold">{{ auth()->user()->name }}</span>
+                        </p>
+                        <h3 class="font-bold text-xl">{{ auth()->user()->employer->name }}</h3>
+                    </div>
+                </div>
+            </div>
+        @endauth
         {{ $slot }}
     </main>
 
@@ -55,6 +97,9 @@
 
             <div class="flex items-center justify-center space-x-4">
                 <x-nav-link href="/jobs">Jobs</x-nav-link>
+                @auth
+                    <x-nav-link href="/dashboard">Dashboard</x-nav-link>
+                @endauth
                 <x-nav-link href="/careers">Careers</x-nav-link>
                 <x-nav-link href="/salaries">Salaries</x-nav-link>
                 <x-nav-link href="/companies">Companies</x-nav-link>

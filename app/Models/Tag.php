@@ -22,7 +22,6 @@ class Tag extends Model
         'name'
     ];
 
-
     public function jobs(): BelongsToMany
     {
         return $this->belongsToMany(Job::class);

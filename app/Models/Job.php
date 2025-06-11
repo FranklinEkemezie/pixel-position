@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -19,6 +20,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool $featured
  * @property $created_at
  * @property $updated_at
+ *
+ * @property Employer $employer
+ * @property Collection<Tag> $tags
  */
 class Job extends Model
 {
@@ -47,5 +51,10 @@ class Job extends Model
     public function limitTags(int $limit=5): BelongsToMany
     {
         return $this->belongsToMany(Tag::class)->limit($limit);
+    }
+
+    public function tag(string $name): Tag|Model
+    {
+        return $this->belongsToMany(Tag::class)->firstOrCreate(['name' => $name]);
     }
 }

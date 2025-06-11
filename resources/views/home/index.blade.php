@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:heading>Home Page</x-slot:heading>
+    <x-slot:heading>{{ $heading ?? 'Home Page' }}</x-slot:heading>
 
     <div class="max-w-5xl mx-auto">
 
@@ -61,7 +61,4 @@
         </section>
 
     </div>
-
-
-
 </x-layout>
