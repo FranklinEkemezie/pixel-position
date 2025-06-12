@@ -91,3 +91,16 @@ test('POST /jobs route stores a new job', function () {
 
 });
 
+test('GET /jobs/{job} display the job', function () {
+    // Arrange
+    $job = Job::factory()->create();
+
+    // Act
+    $response = get("/jobs/$job->id")
+
+    // Assert
+        ->assertOk()
+        ->assertViewIs('jobs.show')
+        ->assertViewHasAll(['job']);
+});
+

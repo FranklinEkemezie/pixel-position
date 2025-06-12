@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-center lg:justify-between space-x-2">
+            <div class="flex items-center justify-center lg:justify-between flex-wrap space-x-2">
                 <x-nav-link href="/jobs">Jobs</x-nav-link>
                 @auth
                     <x-nav-link href="/dashboard">Dashboard</x-nav-link>
@@ -95,7 +95,7 @@
                 <img src="{{ Vite::asset('resources/images/logo.svg') }}" alt="Pixel Position Logo">
             </a>
 
-            <div class="flex items-center justify-center space-x-4">
+            <div class="flex items-center justify-center flex-wrap space-x-4">
                 <x-nav-link href="/jobs">Jobs</x-nav-link>
                 @auth
                     <x-nav-link href="/dashboard">Dashboard</x-nav-link>

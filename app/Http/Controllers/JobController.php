@@ -17,9 +17,9 @@ class JobController extends Controller
         return (new HomeController())->index();
     }
 
-    public function show(Request $request)
+    public function show(Job $job)
     {
-
+        return view('jobs.show', ['job' => $job]);
     }
 
     public function create()
