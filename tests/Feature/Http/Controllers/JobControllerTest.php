@@ -5,6 +5,7 @@ use App\Models\Job;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\patch;
@@ -44,7 +45,7 @@ test('GET /jobs route displays jobs listing page', function () {
 
 test('GET /jobs/create route displays a create job form', function () {
     // Arrange
-    actingAs(User::factory()->create());
+    actingAs(Employer::factory()->create()->user);
 
     // Act
     get('/jobs/create')
@@ -77,11 +78,15 @@ test('POST /jobs route stores a new job', function () {
     $response = post('/jobs', $data);
 
     // Assert
-    $response->assertRedirect('/dashboard');
-    $jobs = $user->employer->jobs;
+    /**
+     * @var Job $job
+     */
+    $jobs   = $user->employer->jobs;
+    $job    = $jobs->first();
 
+    $response->assertRedirect("/jobs/$job->id");
     expect($jobs)->toHaveCount(1)
-        ->and($job = $jobs->first())->toBeInstanceOf(Job::class)
+        ->and($job)->toBeInstanceOf(Job::class)
         ->and($job->employer->is($user->employer))->toBeTrue()
         ->and($job->title)->toBe('Web developer')
         ->and($job->salary)->toBe('15,000 USD')
@@ -96,7 +101,7 @@ test('GET /jobs/{job} display the job', function () {
     $job = Job::factory()->create();
 
     // Act
-    $response = get("/jobs/$job->id")
+    get("/jobs/$job->id")
 
     // Assert
         ->assertOk()
@@ -104,3 +109,78 @@ test('GET /jobs/{job} display the job', function () {
         ->assertViewHasAll(['job']);
 });
 
+test('DELETE /jobs/{job} deletes a job', function () {
+    // Arrange
+    $user       = User::factory()->create();
+    $employer   = Employer::factory()->create(['user_id' => $user->id]);
+    $job        = Job::factory()->create(['employer_id' => $employer->id]);
+
+    actingAs($user);
+
+    // Act
+    delete("/jobs/$job->id")
+
+    // Assert
+        ->assertRedirect('/dashboard');
+    expect(Job::find($job->id))->toBeNull();
+});
+
+test('GET /jobs/{job}/edit displays edit job view', function () {
+    // Arrange
+    $user       = User::factory()->create();
+    $employer   = Employer::factory()->create(['user_id' => $user->id]);
+    $job        = Job::factory()->create(['employer_id' => $employer->id]);
+
+    actingAs($user);
+
+    // Act
+    get("/jobs/$job->id/edit")
+
+    // Assert
+        ->assertOk()
+        ->assertViewIs('jobs.edit')
+        ->assertViewHas(['job']);
+});
+
+test('PATCH /jobs/{job} route validates the data', function () {
+    // Arrange
+    $user       = User::factory()->create();
+    $employer   = Employer::factory()->create(['user_id' => $user->id]);
+    $job        = Job::factory()->create(['employer_id' => $employer->id]);
+    $data       = [];
+
+    actingAs($user);
+
+    // Act
+    patch("/jobs/$job->id", $data)
+
+    // Assert
+        ->assertInvalid(['title', 'salary', 'url', 'schedule', 'location']);
+});
+
+test('PATCH /jobs/{job} route edits a job', function () {
+    // Arrange
+    $user       = User::factory()->create();
+    $employer   = Employer::factory()->create(['user_id' => $user->id]);
+    $job        = Job::factory()->create(['employer_id' => $employer->id]);
+    $data       = [
+        'title'     => 'Skit Manager',
+        'salary'    => '120,000 CAD',
+        'url'       => $job->url,
+        'schedule'  => $job->schedule,
+        'location'  => $job->location
+    ];
+    actingAs($user);
+
+    // Act
+    $response = patch("/jobs/$job->id", $data);
+    $job->refresh();
+
+    // Assert
+    $response->assertRedirect("/jobs/$job->id");
+    expect($job->title)->toBe('Skit Manager')
+        ->and($job->salary)->toBe('120,000 CAD')
+        ->and($job->url)->toBe($data['url'])
+        ->and($job->schedule)->toBe($data['schedule'])
+        ->and($job->location)->toBe($data['location']);
+});

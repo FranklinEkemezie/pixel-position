@@ -17,7 +17,6 @@
                 <x-forms.form-field name="password" type="password" label="Password" />
 
                 <x-forms.form-button>Login</x-forms.form-button>
-
             </div>
         </form>
     </div>

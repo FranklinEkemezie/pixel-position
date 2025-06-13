@@ -43,10 +43,8 @@ Route::prefix('/jobs')->controller(JobController::class)->group(function () {
     Route::middleware(['auth', 'can:edit,job'])->group(function () {
         Route::get('/{job}/edit', 'edit');
         Route::patch('/{job}', 'update');
+        Route::delete('/{job}', 'destroy');
     });
-
-    // Delete job
-    Route::delete('/{job}', 'destroy')->middleware(['auth', 'can:edit,job']);
 });
 
 

@@ -22,7 +22,9 @@ class SessionController extends Controller
         ]);
 
         if (! Auth::attempt($userAttrs)) {
-            return redirect('/login');
+            return redirect()->back()->withErrors([
+                'email' => 'Incorrect email or password'
+            ])->withInput();
         }
 
         return redirect('/dashboard');

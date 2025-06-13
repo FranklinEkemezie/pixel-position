@@ -45,10 +45,35 @@ class JobController extends Controller
 		$job = auth()->user()->employer->jobs()->create($jobAttrs);
 
         $tags = explode(',', $request->input('tags', ''));
-        foreach ($tags as $tag) {
-            $job->tag(trim($tag));
-        }
+        foreach ($tags as $tag) $job->tag(trim($tag));
 
-		return redirect('/dashboard');
+		return redirect("/jobs/$job->id");
+    }
+
+    public function edit(Request $request, Job $job)
+    {
+        return view('jobs.edit', ['job' => $job]);
+    }
+
+    public function update(Request $request, Job $job)
+    {
+        $jobAttrs = $request->validate([
+            'title'     => ['required'],
+            'salary'    => ['required'],
+            'url'       => ['required'],
+            'location'  => ['required'],
+            'schedule'  => ['required'],
+        ]);
+        $jobAttrs['featured'] = $request->has('featured');
+
+        $job->update($jobAttrs);
+
+        return redirect("/jobs/$job->id");
+    }
+
+    public function destroy(Job $job)
+    {
+        $job->delete();
+        return redirect('/dashboard');
     }
 }
