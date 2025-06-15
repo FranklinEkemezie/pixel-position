@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:heading>Register</x-slot:heading>
 
-    <div class="max-w-3xl mx-auto p-12">
+    <div class="max-w-3xl mx-auto md:mt-12">
 
         <form action="/register" method="post" enctype="multipart/form-data">
             @csrf

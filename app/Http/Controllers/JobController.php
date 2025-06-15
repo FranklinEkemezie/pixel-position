@@ -12,9 +12,24 @@ class JobController extends Controller
 {
     //
 
+    protected static function normaliseTagName(string $tagName): string
+    {
+        return strtolower(trim($tagName));
+    }
+
     public function index()
     {
         return (new HomeController())->index();
+    }
+
+    public function search(Request $request)
+    {
+        $jobs   = [];
+        if ($query = $request->get('q')) {
+            $jobs = Job::query()->with(['employer', 'tags'])->where('title', 'LIKE', "%$query%")->paginate();
+        }
+
+        return view('jobs.search_results', ['jobs' => $jobs, 'query' => $query]);
     }
 
     public function show(Job $job)
@@ -39,13 +54,17 @@ class JobController extends Controller
 
         $jobAttrs['featured'] = $request->has('featured');
 
+        $parseTag =
+
         /**
          * @var Job $job
          */
 		$job = auth()->user()->employer->jobs()->create($jobAttrs);
-
         $tags = explode(',', $request->input('tags', ''));
-        foreach ($tags as $tag) $job->tag(trim($tag));
+        foreach ($tags as $tag) {
+            $tag = self::normaliseTagName($tag);
+            if ($tag) $job->tag($tag);
+        }
 
 		return redirect("/jobs/$job->id");
     }
@@ -67,6 +86,13 @@ class JobController extends Controller
         $jobAttrs['featured'] = $request->has('featured');
 
         $job->update($jobAttrs);
+
+        $job->tags()->detach($job->tags->pluck('id'));
+        $tags = explode(',', $request->input('tags', ''));
+        foreach ($tags as $tag) {
+            $tag = self::normaliseTagName($tag);
+            if ($tag) $job->tag($tag);
+        }
 
         return redirect("/jobs/$job->id");
     }

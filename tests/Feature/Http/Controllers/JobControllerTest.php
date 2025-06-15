@@ -14,8 +14,8 @@ use function Pest\Laravel\post;
 uses(RefreshDatabase::class);
 
 it('prevents unauthenticated user from accessing protected job routes', function () {
-    get('/jobs/create')->assertRedirect('/register');
-    post('/jobs')->assertRedirect('/register');
+    get('/jobs/create')->assertRedirect('/login');
+    post('/jobs')->assertRedirect('/login');
 });
 
 it('prevents unauthorised user from accessing guarded job routes ', function () {
@@ -183,4 +183,19 @@ test('PATCH /jobs/{job} route edits a job', function () {
         ->and($job->url)->toBe($data['url'])
         ->and($job->schedule)->toBe($data['schedule'])
         ->and($job->location)->toBe($data['location']);
+});
+
+test('GET /jobs/search returns list of jobs found', function () {
+    // Arrange
+    Job::factory(10)->create();
+
+    // Act
+    $response = get('/jobs/search?q=programmer')
+
+    // Assert
+        ->assertOk()
+        ->assertViewIs('jobs.search_results')
+        ->assertViewHasAll(['jobs']);
+    expect($response->viewData('jobs')->links())
+        ->toBeInstanceOf(\Illuminate\View\View::class);
 });

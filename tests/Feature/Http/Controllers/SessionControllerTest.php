@@ -86,5 +86,5 @@ it('prevents unauthenticated user from accessing logout route', function () {
     delete('/logout')
 
     // Assert
-        ->assertRedirect('/register');
+        ->assertRedirect('/login');
 });

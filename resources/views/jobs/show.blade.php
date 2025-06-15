@@ -16,23 +16,29 @@
 
                 <x-divider />
 
-                <div>
-                    <h4 class="text-gray-50/80">Title</h4>
-                    <p class="text-xl font-bold">{{ $job->title }}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="col-span-full">
+                        <h4 class="text-gray-50/80">Title</h4>
+                        <p class="text-xl font-bold">{{ $job->title }}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-50/80">Salary</h4>
+                        <p class="text-xl font-bold">{{ $job->salary }}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-50/80">Location</h4>
+                        <p class="text-xl font-bold">{{ $job->location }}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-50/80">Schedule</h4>
+                        <p class="text-xl font-bold">{{ $job->schedule }}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-50/80">Posted On</h4>
+                        <p class="text-xl font-bold">{{ $job->created_at->toFormattedDateString() }}</p>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="text-gray-50/80">Salary</h4>
-                    <p class="text-xl font-bold">{{ $job->salary }}</p>
-                </div>
-                <div>
-                    <h4 class="text-gray-50/80">Location</h4>
-                    <p class="text-xl font-bold">{{ $job->location }}</p>
-                </div>
-                <div>
-                    <h4 class="text-gray-50/80">Schedule</h4>
-                    <p class="text-xl font-bold">{{ $job->schedule }}</p>
-                </div>
-                <div>
+                <div class="space-y-2">
                     @foreach($job->tags as $tag)
                         <x-tag :tag="$tag" />
                     @endforeach

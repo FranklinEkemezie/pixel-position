@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:heading>Create Job</x-slot:heading>
 
-    <div class="max-w-3xl mx-auto p-12">
+    <div class="max-w-3xl mx-auto">
 
         <form action="/jobs" method="post">
             @csrf

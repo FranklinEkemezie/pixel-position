@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:heading>Login</x-slot:heading>
 
-    <div class="max-w-3xl mx-auto p-12">
+    <div class="max-w-3xl mx-auto md:p-12">
 
         <form action="/login" method="post">
             @csrf

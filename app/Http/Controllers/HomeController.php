@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $recentJobs     = Job::with(['employer', 'limitTags'])->latest();
+        $recentJobs     = Job::with(['employer', 'limitTags', 'tags'])->latest();
         $featuredJobs   = $recentJobs->get()->where('featured', true);
         $tags           = Tag::all();
 
@@ -28,7 +28,7 @@ class HomeController extends Controller
         $user = auth()->user();
 
         $jobs = $user->employer->jobs();
-        $recentJobs     = $jobs->with(['employer', 'limitTags'])->latest();
+        $recentJobs     = $jobs->with(['employer', 'limitTags', 'tags'])->latest();
         $featuredJobs   = $recentJobs->get()->where('featured', true);
         $tags = $jobs->get()->reduce(function (Collection $tags, Job $job) {
             return $tags->merge($job->tags);

@@ -1,7 +1,7 @@
 @props(['job'])
 <x-job-card-panel>
     <div class="flex flex-col h-full justify-between space-y-8 py-2">
-        <p class="text-sm text-white">{{ $job->employer->name }}</p>
+        <a href="/employers/{{ $job->employer->name }}" class="text-sm text-white">{{ $job->employer->name }}</a>
         <div class="text-center space-y-4">
             <p class="text-lg font-bold group-hover:text-brand-blue">
                 <a href="{{ $job->url }}">{{ $job->title }}</a>

@@ -1,13 +1,13 @@
 <x-layout>
     <x-slot:heading>Create Job</x-slot:heading>
 
-    <div class="max-w-3xl mx-auto p-12">
+    <div class="max-w-3xl mx-auto">
 
         <form action="/jobs/{{ $job->id }}" method="post">
             @csrf
             @method('PATCH')
 
-            <div class="text-center">
+            <div class="text-center mt-8">
                 <h2 class="font-bold text-4xl">Edit Job</h2>
             </div>
 
