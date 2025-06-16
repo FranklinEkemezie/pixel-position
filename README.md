@@ -25,9 +25,8 @@ It allows employers to post job listings and users to browse available positions
 
 ## 📸 Screenshots
 
-<!-- If you have images, add them here -->
-<!-- ![Home Page](screenshots/home.png) -->
-<!-- ![Job Listing](screenshots/job-listing.png) -->
+![Home Page](screenshots/home_page.png)
+![Job Listing](screenshots/job-listing.png)
 
 ---
 
