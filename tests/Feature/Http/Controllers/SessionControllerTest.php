@@ -9,8 +9,6 @@ use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
-uses(RefreshDatabase::class);
-
 it('shows the login page' , function () {
     // Arrange
 

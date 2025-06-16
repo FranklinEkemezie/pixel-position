@@ -7,8 +7,6 @@ use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
-uses(RefreshDatabase::class);
-
 it('displays the user registration page', function () {
     // Arrange
 

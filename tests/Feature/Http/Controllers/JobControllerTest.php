@@ -3,15 +3,12 @@
 use App\Models\Employer;
 use App\Models\Job;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\patch;
 use function Pest\Laravel\post;
-
-uses(RefreshDatabase::class);
 
 it('prevents unauthenticated user from accessing protected job routes', function () {
     get('/jobs/create')->assertRedirect('/login');

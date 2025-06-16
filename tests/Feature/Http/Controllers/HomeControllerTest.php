@@ -1,14 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
+use function Pest\Laravel\get;
 
 it('shows the index page', function () {
     // Arrange
 
     // Act
-    $response = $this->get('/');
+    $response = get('/');
 
     // Assert
     $response->assertOk();

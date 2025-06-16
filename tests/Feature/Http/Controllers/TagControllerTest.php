@@ -5,8 +5,6 @@ use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
-uses(RefreshDatabase::class);
-
 test('GET /tags/{name} displays jobs with tag', function () {
     // Arrange
     $job = Job::factory()->create();

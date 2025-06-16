@@ -2,10 +2,7 @@
 
 use App\Models\Employer;
 use App\Models\Job;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
-
-uses(RefreshDatabase::class);
 
 test('GET /employers displays list of employers', function () {
     // Arrange
