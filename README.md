@@ -1,6 +1,6 @@
 # 🎨 Pixel Positions
 
-![Tests](https://github.com/FranklinEkemezie/pixel-position/actions/workflows/laravel.yml/badge.svg)
+![Tests](https://github.com/FranklinEkemezie/pixel-position/actions/workflows/run-tests.yml/badge.svg)
 [![Laravel](https://img.shields.io/badge/Laravel-12-red?logo=laravel)](https://laravel.com)
 
 Pixel Positions is a Laravel-based job board built as a practice project 
