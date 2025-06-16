@@ -46,7 +46,7 @@ Get all the information you need about a job at a glance\
 ![View Job](screenshots/view_job.png)
 
 ### Edit Job
-Logged-in users can edit the jobs they created
+Logged-in users can edit the jobs they created\
 ![Edit Job](screenshots/edit_job.jpeg)
 
 
