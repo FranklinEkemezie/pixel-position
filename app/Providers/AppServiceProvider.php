@@ -15,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+
+        // For tests
+        $this->app->register(TestingServiceProvider::class);
     }
 
     /**
@@ -25,18 +28,5 @@ class AppServiceProvider extends ServiceProvider
         //
 
         Model::preventLazyLoading();
-
-        // Disable Vite in test environment
-        if (App::environment('testing')) {
-            app()->singleton(Vite::class, function () {
-                return new class extends Vite {
-                    public function asset($asset, $buildDirectory = null): string
-                    {
-                        // You can return fake asset paths or fallback to plain CSS/JS
-                        return "/fake/path/{$asset}";
-                    }
-                };
-            });
-        }
     }
 }
