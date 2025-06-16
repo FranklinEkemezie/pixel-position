@@ -1,6 +1,6 @@
-# 🎨 Pixel Positions
+# 👨‍🔧👨‍🚒👩‍🔬 Pixel Positions
 
-![Tests](https://github.com/FranklinEkemezie/pixel-position/actions/workflows/laravel.yml/badge.svg)
+![Tests](https://github.com/FranklinEkemezie/pixel-position/actions/workflows/run-tests.yml/badge.svg)
 [![Laravel](https://img.shields.io/badge/Laravel-12-red?logo=laravel)](https://laravel.com)
 
 Pixel Positions is a Laravel-based job board built as a practice project 
@@ -25,8 +25,30 @@ It allows employers to post job listings and users to browse available positions
 
 ## 📸 Screenshots
 
+### Home Page
+View a collection of featured jobs and recently posted jobs\
 ![Home Page](screenshots/home_page.png)
-![Job Listing](screenshots/job-listing.png)
+
+### Register
+Create an account with a corresponding employer to post a job\  
+![Register](screenshots/register.jpeg)
+
+### Create New Job
+Logged-in users can post a new job as an employer\
+![Create New Job](screenshots/new_job.png)
+
+### Meet Our Employers
+Browse a list of employers and take a look at their available jobs\
+![Meet Our Employers](screenshots/meet_employers.png)
+
+### View Job
+Get all the information you need about a job at a glance\
+![View Job](screenshots/view_job.png)
+
+### Edit Job
+Logged-in users can edit the jobs they created
+![Edit Job](screenshots/edit_job.jpeg)
+
 
 ---
 
